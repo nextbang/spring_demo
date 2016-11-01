@@ -1,0 +1,78 @@
+<web-app id="WebApp_ID" version="2.4"
+         xmlns="http://java.sun.com/xml/ns/j2ee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee
+         http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">
+
+    <display-name>Spring4MVCHelloWorldDemo Web Application</display-name>
+
+    <context-param>
+        <param-name>log4jConfigLocation</param-name>
+        <param-value>classpath:log4j.properties</param-value>
+    </context-param>
+    <!--
+    <context-param>
+        <param-name>log4jRefreshInterval</param-name>
+        <param-value>6000</param-value>
+    </context-param>
+    -->
+
+    <context-param>
+        <param-name>contextConfigLocation</param-name>
+        <param-value>
+            classpath:ApplicationContext.xml,
+        </param-value>
+    </context-param>
+
+    <!-- 装载log4j配置文件，注意这个要在装载Spring Web容器之前 -->
+    <listener>
+        <listener-class>
+            org.springframework.web.util.Log4jConfigListener
+        </listener-class>
+    </listener>
+
+
+    <!--配置spring listener-->
+    <listener>
+        <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+    </listener>
+
+    <!-- 防止Spring内存溢出监听器 -->
+    <listener>
+        <listener-class>org.springframework.web.util.IntrospectorCleanupListener</listener-class>
+    </listener>
+
+    <!--解决POST乱码问题-->
+    <filter>
+        <filter-name>CharacterEncodingFilter</filter-name>
+        <filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
+        <init-param>
+            <param-name>encoding</param-name>
+            <param-value>utf-8</param-value>
+        </init-param>
+    </filter>
+    <filter-mapping>
+        <filter-name>CharacterEncodingFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+
+
+
+    <!--springmvc前端控制器配置-->
+    <servlet>
+        <servlet-name>dispatcherServlet</servlet-name>
+        <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+        <init-param>
+            <param-name>contextConfigLocation</param-name>
+            <param-value>classpath*:spring-mvc.xml</param-value>
+        </init-param>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>dispatcherServlet</servlet-name>
+        <url-pattern>/</url-pattern>
+    </servlet-mapping>
+
+
+</web-app>
